@@ -1,0 +1,45 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
+
+PROJECT(IntegratonTest)
+
+ADD_DEFINITIONS(-std=c++11)
+
+
+SET(INCLUDE_DIR ../include /usr/include /usr/local/include /usr/include/speech_tools /usr/local/include/sphinxbase /usr/local/include/pocketsphinx  
+/home/blindfind/gitlab/caffe/build/install/include 
+/usr/local/cuda/include 
+/home/blindfind/Documents/Blindfind3/include/VO 
+/usr/include/eigen3 
+/usr/local/include/isam)
+
+MESSAGE(STATUS ${CMAKE_BINARY_DIR}  ${PROJECT_BINARY_DIR})#  ${IntegrationTestWithoutPS4_BINARY_DIR})
+MESSAGE (STATUS ${PROJECT_SOURCE_DIR})
+MESSAGE(STATUS "CMAKE CURRENT BINARY DIR " ${CMAKE_CURRENT_BINARY_DIR})
+MESSAGE(STATUS "CMAKE CURRENT SOURCE DIR " ${CMAKE_CURRENT_SOURCE_DIR})
+MESSAGE(STATUS "CMAKE_INSTALL_PREFIXD " ${CMAKE_INSTALL_PREFIX})
+SET(BINARY_OUTPUT_DIR ${PROJECT_SOURCE_DIR}/bin)
+
+
+aux_source_directory(../cmake_src  SRC_CODE)
+
+find_package(OpenCV REQUIRED)
+find_package(DBoW3 REQUIRED)
+SET(INCLUDE_DIR ${INCLUDE_DIR} ${DBoW3_INCLUDE_DIRS} ${OPENCV_INCLUDE_DIRS})
+
+MESSAGE(STATUS "OPENCV_LIB_DIRS: " ${OpenCV_LIBRARY_DIR})
+MESSAGE(STATUS "FIND OPENCV_LIBS: ")
+
+FOREACH( a ${OpenCV_LIBS})
+    MESSAGE(STATUS ${a})
+ENDFOREACH()
+
+SET(SHARED_LIBRARY  glog boost_system boost_filesystem caffe  isam cholmod  Festival estools eststring estbase ncurses lcm pthread usb-custom udev
+pocketsphinx sphinxbase sphinxad pulse pulse-simple m blas lapack ${OpenCV_LIBS} ${DBoW3_LIBS})
+
+SET(LIB_DIR festival/src/lib speech_tools/lib  ${DBoW3_LIB_DIR} ../3rdParty ${OpenCV_LIBRARY_DIRS} /usr/lib/x86_64-linux-gnu /home/blindfind/gitlab/caffe/build/install/lib)
+
+include_directories(${INCLUDE_DIR})
+link_directories(${LIB_DIR} )
+ADD_EXECUTABLE(GroundTest ${SRC_CODE})
+
+TARGET_LINK_LIBRARIES(GroundTest ${SHARED_LIBRARY} ${OpenCV_LIBS})

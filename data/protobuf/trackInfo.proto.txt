@@ -1,0 +1,72 @@
+package blindfind;
+
+message Relation2d{
+
+    required double xDiff=1 [default=0];
+    required double yDiff=2 [default=0];
+    required double angleDiff=3 [default=0]; //Must be radian
+}
+
+message Relation3d{
+
+    required double xDiff=1 [default=0];
+    required double yDiff=2 [default=0];
+    required double zDiff=3 [default=0];
+    required double yaw=4 [default=0];  //Must be radian
+    required double pitch=5 [default=0]; //Must be radian
+    required double roll=6 [default=0]; //Must be radian
+
+}
+
+message Relation2dBetweenTracks{
+
+    required int32 track1Id=1 [default=0];
+    required int32 track2Id=2 [default=0];
+    required int32 view1Id=3 [default=0];
+    required int32 view2Id=4 [default=0];
+    required double xDiff=5 [default=0];
+    required double yDiff=6 [default=0];
+    required double angleDiff=7 [default=0];
+}
+
+message Relation3dBetweenTracks{
+
+    required int32 track1Id=1 [default=0];
+    required int32 track2Id=2 [default=0];
+    required int32 view1Id=3 [default=0];
+    required int32 view2Id=4 [default=0];
+    required double xDiff=5 [default=0];
+    required double yDiff=6 [default=0];
+    required double zDiff=7 [default=0];
+    required double yaw=8 [default=0];
+    required double pitch=9 [default=0];
+    required double roll=10 [default=0];
+
+}
+
+message View{
+
+    optional string imageDir=1;
+    optional string featureDir=2; //Currently it is the dir of full-connection layer's feature
+    optional Relation2d relation2d=3;
+    optional Relation3d relation3d=4;
+    
+}
+
+message Track{
+
+    required int32 viewNum=1 [default=0];
+    repeated View view=2;
+
+}
+
+message AllRelations{
+
+    repeated Relation2dBetweenTracks relation2dBetweenTracks=1;
+    repeated Relation3dBetweenTracks relation3dBetweenTracks=2;
+}
+
+message TrackMap{
+    repeated Track track=1;
+    required AllRelations allRelations=2;
+}
